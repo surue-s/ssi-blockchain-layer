@@ -7,16 +7,14 @@ let deploymentInfo;
 if (fs.existsSync('deployment.json')) {
     deploymentInfo = JSON.parse(fs.readFileSync('deployment.json', 'utf8'));
 } else {
-    console.error("❌ deployment.json not found. Run 'npm run deploy:amoy' first.");
+    console.error("deployment.json not found. Run 'npm run deploy:amoy' first.");
     process.exit(1);
 }
 
 const contractAddress = deploymentInfo.contractAddress;
 
 async function main() {
-    console.log("\n========================================");
-    console.log("🧪 DIDRegistry Contract Tester");
-    console.log("========================================\n");
+    console.log("DIDRegistry Contract Tester");
     
     const [deployer] = await ethers.getSigners();
     console.log(`📝 Testing with account: ${deployer.address}\n`);
@@ -36,13 +34,13 @@ async function main() {
     
     try {
         const tx1 = await didRegistry.registerDID(testDID, testPublicKey);
-        console.log(`📊 Transaction: ${tx1.hash}`);
+        console.log(`Transaction: ${tx1.hash}`);
         
         const receipt1 = await tx1.wait();
-        console.log(`✅ DID registered successfully!`);
-        console.log(`⛽ Gas used: ${receipt1.gasUsed.toString()}\n`);
+        console.log(`DID registered successfully!`);
+        console.log(`Gas used: ${receipt1.gasUsed.toString()}\n`);
     } catch (error) {
-        console.error(`❌ Error: ${error.message}\n`);
+        console.error(`Error: ${error.message}\n`);
         return;
     }
     
@@ -52,13 +50,13 @@ async function main() {
     
     try {
         const document = await didRegistry.getDIDDocument(testDID);
-        console.log("✅ DID Document retrieved:");
-        console.log(`   Owner: ${document.owner}`);
-        console.log(`   Public Key: ${document.publicKeyJwk}`);
-        console.log(`   Active: ${document.active}`);
-        console.log(`   Created: ${new Date(document.created * 1000).toISOString()}\n`);
+        console.log("DID Document retrieved:");
+        console.log(`Owner: ${document.owner}`);
+        console.log(`Public Key: ${document.publicKeyJwk}`);
+        console.log(`Active: ${document.active}`);
+        console.log(`Created: ${new Date(document.created * 1000).toISOString()}\n`);
     } catch (error) {
-        console.error(`❌ Error: ${error.message}\n`);
+        console.error(`Error: ${error.message}\n`);
         return;
     }
     
@@ -80,13 +78,13 @@ async function main() {
             "AgeProof",
             issuerDID
         );
-        console.log(`📊 Transaction: ${tx2.hash}`);
+        console.log(`Transaction: ${tx2.hash}`);
         
         const receipt2 = await tx2.wait();
-        console.log(`✅ Credential hash registered successfully!`);
-        console.log(`⛽ Gas used: ${receipt2.gasUsed.toString()}\n`);
+        console.log(`Credential hash registered successfully!`);
+        console.log(` Gas used: ${receipt2.gasUsed.toString()}\n`);
     } catch (error) {
-        console.error(`❌ Error: ${error.message}\n`);
+        console.error(`Error: ${error.message}\n`);
         return;
     }
     
@@ -97,12 +95,12 @@ async function main() {
     try {
         const exists = await didRegistry.isCredentialHashRegistered(testDID, credentialHash);
         if (exists) {
-            console.log("✅ Credential hash verified successfully!\n");
+            console.log("Credential hash verified successfully!\n");
         } else {
-            console.log("❌ Credential hash not found!\n");
+            console.log("Credential hash not found!\n");
         }
     } catch (error) {
-        console.error(`❌ Error: ${error.message}\n`);
+        console.error(`Error: ${error.message}\n`);
         return;
     }
     
@@ -112,7 +110,7 @@ async function main() {
     
     try {
         const hashes = await didRegistry.getCredentialHashes(testDID);
-        console.log(`✅ Found ${hashes.length} credential hash(es):`);
+        console.log(`Found ${hashes.length} credential hash(es):`);
         hashes.forEach((hash, index) => {
             console.log(`   ${index + 1}. Type: ${hash.credentialType}`);
             console.log(`      Hash: ${hash.hash.slice(0, 20)}...`);
@@ -133,13 +131,13 @@ async function main() {
     
     try {
         const tx3 = await didRegistry.updatePublicKey(testDID, newPublicKey);
-        console.log(`📊 Transaction: ${tx3.hash}`);
+        console.log(`Transaction: ${tx3.hash}`);
         
         const receipt3 = await tx3.wait();
-        console.log(`✅ Public key updated successfully!`);
-        console.log(`⛽ Gas used: ${receipt3.gasUsed.toString()}\n`);
+        console.log(`Public key updated successfully!`);
+        console.log(`Gas used: ${receipt3.gasUsed.toString()}\n`);
     } catch (error) {
-        console.error(`❌ Error: ${error.message}\n`);
+        console.error(`Error: ${error.message}\n`);
         return;
     }
     
@@ -149,9 +147,9 @@ async function main() {
     
     try {
         const count = await didRegistry.getDIDCount();
-        console.log(`✅ Total registered DIDs: ${count.toString()}\n`);
+        console.log(`Total registered DIDs: ${count.toString()}\n`);
     } catch (error) {
-        console.error(`❌ Error: ${error.message}\n`);
+        console.error(`Error: ${error.message}\n`);
         return;
     }
     
@@ -163,30 +161,28 @@ async function main() {
     
     try {
         const tx4 = await didRegistry.deactivateDID(testDID);
-        console.log(`📊 Transaction: ${tx4.hash}`);
+        console.log(`Transaction: ${tx4.hash}`);
         
         const receipt4 = await tx4.wait();
-        console.log(`✅ DID deactivated successfully!`);
-        console.log(`⛽ Gas used: ${receipt4.gasUsed.toString()}\n`);
+        console.log(`DID deactivated successfully!`);
+        console.log(`Gas used: ${receipt4.gasUsed.toString()}\n`);
     } catch (error) {
-        console.error(`❌ Error: ${error.message}\n`);
+        console.error(`Error: ${error.message}\n`);
         return;
     }
     
     // Summary
-    console.log("========================================");
-    console.log("✅ ALL TESTS COMPLETED!");
-    console.log("========================================\n");
+    console.log("RAWRRR COMPLETED !");
     
     console.log("📊 Test Summary:");
-    console.log(`   ✓ DID Registration`);
-    console.log(`   ✓ Get DID Document`);
-    console.log(`   ✓ Register Credential Hash`);
-    console.log(`   ✓ Verify Credential Hash`);
-    console.log(`   ✓ Get Credential Hashes`);
-    console.log(`   ✓ Update Public Key`);
-    console.log(`   ✓ Get DID Count`);
-    console.log(`   ✓ Deactivate DID\n`);
+    console.log(`DID Registration`);
+    console.log(`Get DID Document`);
+    console.log(`Register Credential Hash`);
+    console.log(`Verify Credential Hash`);
+    console.log(`Get Credential Hashes`);
+    console.log(`Update Public Key`);
+    console.log(`Get DID Count`);
+    console.log(`Deactivate DID\n`);
     
     console.log("🔗 View on Polygonscan:");
     console.log(`   ${deploymentInfo.blockExplorer}\n`);
@@ -195,7 +191,7 @@ async function main() {
 main()
     .then(() => process.exit(0))
     .catch((error) => {
-        console.error("❌ Test failed:");
+        console.error("sad lol:");
         console.error(error);
         process.exit(1);
     });
