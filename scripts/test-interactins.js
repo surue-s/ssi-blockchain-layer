@@ -17,7 +17,7 @@ async function main() {
     console.log("DIDRegistry Contract Tester");
     
     const [deployer] = await ethers.getSigners();
-    console.log(`📝 Testing with account: ${deployer.address}\n`);
+    console.log(`Testing with account: ${deployer.address}\n`);
     
     // Load contract
     const DIDRegistry = await hre.ethers.getContractFactory("DIDRegistry");
